@@ -73,6 +73,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/auth.css">
+    <style>
+        .password-toggle {
+            position: relative;
+        }
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+        }
+        .password-toggle-btn:hover {
+            color: var(--primary-dark);
+        }
+    </style>
 </head>
 <body class="auth-body">
     <div class="auth-container">
@@ -101,15 +121,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            value="<?php echo htmlspecialchars($email ?? ''); ?>"
                            placeholder="you@example.com" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group password-toggle">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password"
                            placeholder="At least 6 characters" required>
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword('password')">Show</button>
                 </div>
-                <div class="form-group">
+                <div class="form-group password-toggle">
                     <label for="confirm_password">Confirm Password</label>
                     <input type="password" id="confirm_password" name="confirm_password"
                            placeholder="Re-enter your password" required>
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword('confirm_password')">Show</button>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block" id="signup-btn">Create Account</button>
             </form>
@@ -119,5 +141,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </p>
         </div>
     </div>
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            const btn = input.nextElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = 'Hide';
+            } else {
+                input.type = 'password';
+                btn.textContent = 'Show';
+            }
+        }
+    </script>
 </body>
 </html>
