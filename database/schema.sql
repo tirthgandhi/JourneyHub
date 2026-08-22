@@ -148,6 +148,16 @@ CREATE TABLE IF NOT EXISTS expenses (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ====================================================================
+-- BRANCH 6 ADDITIONS: Budget and Calendar Support
+-- ====================================================================
+
+-- Add budget column to trips table for budget tracking
+ALTER TABLE trips ADD COLUMN budget DECIMAL(10,2) DEFAULT 0.00 AFTER end_date;
+
+-- Add expense_date column to expenses table for calendar/date filtering
+ALTER TABLE expenses ADD COLUMN expense_date DATE NULL AFTER amount;
+
+-- ====================================================================
 -- Schema creation complete!
 -- Next: Run seed.sql to populate with test data
 -- ====================================================================
