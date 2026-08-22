@@ -1,0 +1,383 @@
+/**
+ * Activities Panel Styles — JourneyHub
+ * 
+ * Inline activities management within itinerary stops
+ * Uses existing CSS variables from style.css
+ */
+
+/* ── Activities Section ── */
+.stop-activities {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+}
+
+.activities-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.activities-header h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.btn-add-activity {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+}
+
+/* ── Activity List ── */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: var(--color-input-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    transition: box-shadow var(--transition);
+}
+
+.activity-item:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.activity-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.activity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.activity-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.activity-actions {
+    display: flex;
+    gap: 6px;
+    margin-left: 12px;
+}
+
+/* ── Empty State ── */
+.activities-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    background-color: var(--color-input-bg);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius);
+}
+
+/* ── Activity Search Panel ── */
+.activity-search-panel {
+    margin-top: 12px;
+    padding: 16px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.activity-search-panel.hidden {
+    display: none;
+}
+
+.search-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.search-panel-header h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.btn-close-search {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    line-height: 1;
+}
+
+.btn-close-search:hover {
+    color: var(--color-text);
+}
+
+.activity-search-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.activity-search-input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background-color: var(--color-input-bg);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.activity-search-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.activity-type-filter {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background-color: var(--color-input-bg);
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.activity-type-filter:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ── Search Results ── */
+.activity-search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-search-item {
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background-color: var(--color-input-bg);
+    transition: box-shadow var(--transition);
+}
+
+.activity-search-item:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.search-item-header {
+    margin-bottom: 8px;
+}
+
+.search-item-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.search-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+}
+
+.search-item-description {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.search-item-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    align-items: end;
+}
+
+.search-item-actions label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.search-item-actions input[type="date"],
+.search-item-actions input[type="time"] {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    font-family: var(--font-family);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background-color: var(--color-surface);
+}
+
+.search-results-empty {
+    padding: 32px;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+/* ── Error Messages ── */
+.error-msg {
+    padding: 10px 14px;
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: var(--radius);
+    color: var(--color-danger);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Edit Mode ── */
+.activity-item.editing {
+    background-color: var(--color-surface);
+    border-color: var(--color-primary);
+}
+
+.activity-edit-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border);
+}
+
+.activity-edit-form label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.activity-edit-form input {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+.activity-edit-actions {
+    display: flex;
+    gap: 4px;
+    align-items: end;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .activity-search-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .activity-type-filter {
+        width: 100%;
+    }
+    
+    .search-item-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-item-actions .btn {
+        width: 100%;
+    }
+    
+    .activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .activity-actions {
+        margin-left: 0;
+        margin-top: 12px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .activity-edit-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .activity-edit-actions {
+        width: 100%;
+    }
+    
+    .activity-edit-actions .btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .activities-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .btn-add-activity {
+        width: 100%;
+    }
+    
+    .activity-meta {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .activity-actions {
+        flex-wrap: wrap;
+    }
+    
+    .activity-actions .btn {
+        flex: 1;
+        min-width: calc(50% - 3px);
+    }
+}
