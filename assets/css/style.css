@@ -7,58 +7,66 @@
 
 /* ── CSS Custom Properties ── */
 :root {
-    /* New Earthy Color Palette */
-    --deep-forest:       #163A32;
-    --sage:              #6F8F7A;
-    --warm-sand:         #F4E6D3;
-    --peach:             #EFBFA5;
-    --espresso:          #4A2C25;
-    --cream:             #FFF9F3;
-    
-    /* Mapped Colors */
-    --primary-dark:      var(--deep-forest);
-    --primary-light:     var(--peach);
-    --bg:                var(--cream);
-    --secondary-dark:    var(--espresso);
+    /* Professional Color Palette */
+    --primary-dark:      #1D4533;
+    --primary-light:     #F9D2BA;
+    --bg:                #F7EAE0;
+    --secondary-dark:    #5E3122;
     
     /* Extended Colors */
-    --color-primary:     var(--deep-forest);
-    --color-primary-hover: #0f2620;
-    --color-secondary:   var(--espresso);
-    --color-accent:      var(--peach);
-    --color-sage:        var(--sage);
+    --color-primary:     var(--primary-dark);
+    --color-primary-hover: #153424;
+    --color-secondary:   var(--secondary-dark);
+    --color-accent:      var(--primary-light);
     --color-danger:      #dc2626;
     --color-danger-hover:#b91c1c;
     --color-success:     #16a34a;
-    --color-bg:          var(--cream);
+    --color-warning:     #f59e0b;
+    --color-bg:          var(--bg);
     --color-surface:     #ffffff;
-    --color-text:        #2c2c2c;
-    --color-text-muted:  #6b6b6b;
-    --color-border:      #E5D9C8;
-    --color-input-bg:    var(--warm-sand);
+    --color-text:        #1a1a1a;
+    --color-text-muted:  #64748b;
+    --color-border:      #e2e8f0;
+    --color-input-bg:    #ffffff;
     
-    /* Layout & Spacing */
-    --max-width:         1400px;
+    /* Compact Professional Spacing */
+    --space-xs:          4px;
+    --space-sm:          8px;
+    --space-md:          12px;
+    --space-lg:          16px;
+    --space-xl:          20px;
+    --space-2xl:         24px;
+    --space-3xl:         32px;
+    
+    /* Layout */
+    --max-width:         1240px;
     --container-padding: 24px;
     --radius:            8px;
-    --radius-lg:         12px;
-    --shadow-sm:         0 1px 3px rgba(22, 58, 50, 0.08);
-    --shadow-md:         0 4px 12px rgba(22, 58, 50, 0.12);
-    --shadow-lg:         0 8px 24px rgba(22, 58, 50, 0.16);
+    --radius-lg:         10px;
+    --shadow-sm:         0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md:         0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg:         0 4px 16px rgba(0, 0, 0, 0.12);
     
-    /* Typography */
+    /* Professional Typography */
     --font-family:       'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-size-xs:      0.75rem;
-    --font-size-sm:      0.875rem;
-    --font-size-base:    1rem;
-    --font-size-lg:      1.125rem;
-    --font-size-xl:      1.25rem;
-    --font-size-2xl:     1.5rem;
-    --font-size-3xl:     2rem;
+    --font-xs:           12px;
+    --font-sm:           13px;
+    --font-base:         14px;
+    --font-md:           15px;
+    --font-lg:           16px;
+    --font-xl:           18px;
+    --font-2xl:          22px;
+    --font-3xl:          28px;
+    --font-4xl:          32px;
+    
+    /* Component Sizes */
+    --navbar-height:     64px;
+    --button-height:     40px;
+    --input-height:      42px;
+    --card-padding:      16px;
     
     /* Animation */
-    --transition:        0.2s ease;
-    --transition-slow:   0.3s ease;
+    --transition:        0.15s ease;
 }
 
 /* ── Reset ── */
@@ -75,10 +83,12 @@ html {
 
 body {
     font-family: var(--font-family);
+    font-size: var(--font-base);
     color: var(--color-text);
     background-color: var(--color-bg);
-    line-height: 1.6;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -95,10 +105,19 @@ img {
     display: block;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
     line-height: 1.3;
     font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
 }
+
+h1 { font-size: var(--font-3xl); font-weight: 700; }
+h2 { font-size: var(--font-2xl); font-weight: 600; }
+h3 { font-size: var(--font-xl); font-weight: 600; }
+h4 { font-size: var(--font-lg); font-weight: 500; }
+
+p { margin: 0; }
 
 /* ── Buttons ── */
 .btn {

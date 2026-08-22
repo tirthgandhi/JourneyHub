@@ -1,0 +1,206 @@
+/*
+ * Compact Professional Navbar - JourneyHub
+ * Height: 64px, efficient use of space
+ */
+
+/* ── Main Navbar ── */
+.navbar {
+    background-color: var(--primary-dark);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: var(--navbar-height);
+}
+
+.navbar-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* ── Brand ── */
+.navbar-brand {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: -0.3px;
+    transition: color var(--transition);
+}
+
+.navbar-brand:hover {
+    color: var(--primary-light);
+}
+
+/* ── Navigation Links ── */
+.navbar-links {
+    display: flex;
+    list-style: none;
+    gap: var(--space-xs);
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.navbar-links li {
+    margin: 0;
+}
+
+.navbar-links a {
+    display: block;
+    padding: var(--space-sm) var(--space-lg);
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: var(--font-base);
+    font-weight: 500;
+    border-radius: var(--radius);
+    transition: all var(--transition);
+    position: relative;
+}
+
+.navbar-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.navbar-links a.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.navbar-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: var(--space-lg);
+    right: var(--space-lg);
+    height: 2px;
+    background-color: var(--primary-light);
+    border-radius: 2px 2px 0 0;
+}
+
+/* ── User Section ── */
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.navbar-username {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: var(--font-sm);
+    font-weight: 500;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-logout {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all var(--transition);
+}
+
+.navbar-logout:hover {
+    background-color: var(--secondary-dark);
+    border-color: var(--secondary-dark);
+    color: #ffffff;
+}
+
+/* ── Mobile Menu Toggle ── */
+.navbar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: var(--space-sm);
+    border-radius: var(--radius);
+    transition: background-color var(--transition);
+}
+
+.navbar-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Responsive Design ── */
+@media (max-width: 1024px) {
+    .navbar-links {
+        gap: var(--space-xs);
+    }
+    
+    .navbar-links a {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--font-sm);
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-inner {
+        flex-wrap: wrap;
+    }
+    
+    .navbar-toggle {
+        display: block;
+        order: 3;
+    }
+    
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        order: 4;
+        padding: var(--space-lg) 0;
+        gap: var(--space-xs);
+    }
+    
+    .navbar-links.show {
+        display: flex;
+    }
+    
+    .navbar-links a {
+        width: 100%;
+        padding: var(--space-md) var(--space-lg);
+    }
+    
+    .navbar-links a.active::after {
+        left: 0;
+        right: 0;
+        height: 2px;
+    }
+    
+    .navbar-user {
+        order: 2;
+        gap: var(--space-md);
+    }
+    
+    .navbar-username {
+        display: none;
+    }
+    
+    .navbar-logout {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--font-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand {
+        font-size: var(--font-lg);
+    }
+    
+    .navbar-inner {
+        padding: 0 var(--space-lg);
+    }
+}

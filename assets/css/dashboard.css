@@ -1,106 +1,141 @@
 /*
- * Dashboard Styles — JourneyHub
+ * Dashboard - JourneyHub
+ * Compact professional dashboard layout
  */
 
 .dashboard-main {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 40px var(--container-padding);
+    padding: var(--space-2xl) var(--container-padding);
 }
 
+/* ── Welcome Section (Compact) ── */
 .welcome-section {
-    background: linear-gradient(135deg, var(--deep-forest) 0%, var(--sage) 100%);
-    color: #ffffff;
-    border-radius: var(--radius-lg);
-    padding: 48px 40px;
-    margin-bottom: 40px;
-    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--space-3xl);
 }
 
 .welcome-section h1 {
-    font-size: var(--font-size-3xl);
-    margin-bottom: 12px;
+    font-size: var(--font-3xl);
     font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: var(--space-sm);
 }
 
 .welcome-section p {
-    font-size: var(--font-size-lg);
-    margin-bottom: 24px;
-    opacity: 0.95;
+    font-size: var(--font-md);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xl);
 }
 
 .welcome-actions {
     display: flex;
-    gap: 16px;
+    gap: var(--space-md);
     flex-wrap: wrap;
 }
 
+/* ── Stats Row (Compact) ── */
 .stats-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
-    margin-bottom: 48px;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-3xl);
 }
 
 .stat-card {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 28px 24px;
+    padding: var(--space-xl);
     text-align: center;
     box-shadow: var(--shadow-sm);
     transition: all var(--transition);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
     box-shadow: var(--shadow-md);
-    border-color: var(--deep-forest);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 .stat-number {
     display: block;
-    font-size: 2.5rem;
+    font-size: var(--font-4xl);
     font-weight: 700;
-    color: var(--deep-forest);
-    margin-bottom: 8px;
+    color: var(--primary-dark);
+    line-height: 1;
+    margin-bottom: var(--space-sm);
 }
 
 .stat-label {
     display: block;
-    font-size: var(--font-size-sm);
+    font-size: var(--font-sm);
     color: var(--color-text-muted);
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
+/* ── Dashboard Sections ── */
 .dashboard-section {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-3xl);
 }
 
 .dashboard-section h2 {
-    font-size: var(--font-size-2xl);
-    font-weight: 700;
+    font-size: var(--font-2xl);
+    font-weight: 600;
     color: var(--color-text);
-    margin-bottom: 24px;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: 2px solid var(--color-border);
 }
 
+/* ── Trip Cards Grid (Compact) ── */
 .trip-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-xl);
+}
+
+.trip-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.trip-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 .trip-card-cover {
     width: 100%;
-    height: 200px;
+    height: 160px;
     overflow: hidden;
-    background: var(--warm-sand);
+    background-color: var(--color-bg);
+    position: relative;
 }
 
 .trip-card-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.trip-card:hover .trip-card-cover img {
+    transform: scale(1.05);
 }
 
 .trip-card-placeholder {
@@ -109,87 +144,175 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4rem;
-    background: linear-gradient(135deg, var(--warm-sand), var(--peach));
+    font-size: 48px;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--color-bg) 100%);
 }
 
 .trip-card-body {
-    padding: 20px;
+    padding: var(--space-lg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
 }
 
 .trip-card-body h3 {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-md);
     font-weight: 600;
-    margin-bottom: 8px;
     color: var(--color-text);
+    margin: 0;
+    line-height: 1.3;
 }
 
-.trip-dates {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    display: block;
-    margin-bottom: 4px;
-}
-
-.trip-duration {
-    font-size: var(--font-size-sm);
-    color: var(--sage);
+.trip-card-body .trip-dates {
+    font-size: var(--font-sm);
+    color: var(--secondary-dark);
     font-weight: 500;
 }
 
+.trip-card-body .trip-duration {
+    font-size: var(--font-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* ── Recent Trips List (Compact) ── */
 .recent-trips-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-md);
 }
 
 .recent-trip-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--color-surface);
+    background-color: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 20px 24px;
-    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius);
+    padding: var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-lg);
     transition: all var(--transition);
 }
 
 .recent-trip-item:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--deep-forest);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--primary-dark);
+}
+
+.recent-trip-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
 }
 
 .recent-trip-info h4 {
-    font-size: var(--font-size-lg);
-    margin-bottom: 8px;
+    font-size: var(--font-base);
+    font-weight: 600;
     color: var(--color-text);
+    margin: 0;
+}
+
+.recent-trip-info .trip-dates {
+    font-size: var(--font-sm);
+    color: var(--secondary-dark);
+    font-weight: 500;
+}
+
+.recent-trip-info .trip-duration {
+    font-size: var(--font-xs);
+    color: var(--color-text-muted);
+}
+
+/* ── Empty State ── */
+.empty-state {
+    text-align: center;
+    padding: var(--space-3xl) var(--space-xl);
+    background-color: var(--color-surface);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-muted);
+}
+
+.empty-state p {
+    font-size: var(--font-base);
+    margin: 0;
+}
+
+.empty-state a {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.empty-state a:hover {
+    text-decoration: none;
+}
+
+/* ── Responsive Design ── */
+@media (max-width: 1024px) {
+    .trip-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: var(--space-lg);
+    }
 }
 
 @media (max-width: 768px) {
     .dashboard-main {
-        padding: 24px 16px;
-    }
-    
-    .welcome-section {
-        padding: 32px 24px;
+        padding: var(--space-xl) var(--space-lg);
     }
     
     .welcome-section h1 {
-        font-size: var(--font-size-2xl);
+        font-size: var(--font-2xl);
     }
     
     .stats-row {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: var(--space-md);
+    }
+    
+    .stat-card {
+        min-height: 100px;
+        padding: var(--space-lg);
+    }
+    
+    .stat-number {
+        font-size: var(--font-3xl);
     }
     
     .trip-cards-grid {
         grid-template-columns: 1fr;
+        gap: var(--space-lg);
     }
     
     .recent-trip-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
+        gap: var(--space-md);
+    }
+    
+    .welcome-actions {
+        flex-direction: column;
+    }
+    
+    .welcome-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-main {
+        padding: var(--space-lg);
+    }
+    
+    .welcome-section {
+        margin-bottom: var(--space-2xl);
+    }
+    
+    .stats-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
     }
 }
