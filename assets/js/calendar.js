@@ -13,12 +13,19 @@ const activitiesListEl = document.getElementById('activities-list');
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    loadCalendarData();
-    setupEventListeners();
-    
-    // Set initial month from trip start date
-    currentMonth = new Date(TRIP_START);
-    renderCalendar();
+    if (typeof OVERVIEW_MODE !== 'undefined' && OVERVIEW_MODE) {
+        // Overview mode - render all trips
+        setupEventListeners();
+        renderCalendar();
+    } else {
+        // Single trip mode
+        loadCalendarData();
+        setupEventListeners();
+        
+        // Set initial month from trip start date
+        currentMonth = new Date(TRIP_START);
+        renderCalendar();
+    }
 });
 
 function setupEventListeners() {
@@ -73,20 +80,39 @@ function renderCalendarGrid() {
             const dateStr = currentDate.toISOString().split('T')[0];
             const isCurrentMonth = currentDate.getMonth() === month;
             const isToday = dateStr === new Date().toISOString().split('T')[0];
-            const hasActivities = calendarData.days && calendarData.days[dateStr];
-            const isInTripRange = dateStr >= TRIP_START && dateStr <= TRIP_END;
             
             let classes = ['calendar-day'];
             if (!isCurrentMonth) classes.push('outside-month');
             if (isToday) classes.push('today');
-            if (hasActivities) classes.push('has-activities');
-            if (selectedDate === dateStr) classes.push('selected');
             
-            html += `<div class="${classes.join(' ')}" 
-                          data-date="${dateStr}" 
-                          ${isInTripRange ? 'onclick="selectDate(\'' + dateStr + '\')"' : ''}>
-                        ${currentDate.getDate()}
-                     </div>`;
+            // In overview mode, render trip bars
+            if (typeof OVERVIEW_MODE !== 'undefined' && OVERVIEW_MODE) {
+                const hasActivities = false;
+                const isInTripRange = false;
+                
+                if (hasActivities) classes.push('has-activities');
+                if (selectedDate === dateStr) classes.push('selected');
+                
+                html += `<div class="${classes.join(' ')}" 
+                              data-date="${dateStr}" 
+                              style="position: relative;">
+                            ${currentDate.getDate()}
+                            ${renderTripBarsForDate(dateStr)}
+                         </div>`;
+            } else {
+                // Single trip mode
+                const hasActivities = calendarData.days && calendarData.days[dateStr];
+                const isInTripRange = dateStr >= TRIP_START && dateStr <= TRIP_END;
+                
+                if (hasActivities) classes.push('has-activities');
+                if (selectedDate === dateStr) classes.push('selected');
+                
+                html += `<div class="${classes.join(' ')}" 
+                              data-date="${dateStr}" 
+                              ${isInTripRange ? 'onclick="selectDate(\'' + dateStr + '\')"' : ''}>
+                            ${currentDate.getDate()}
+                         </div>`;
+            }
             
             currentDate.setDate(currentDate.getDate() + 1);
         }
@@ -204,4 +230,42 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+
+/**
+ * Render trip bars for overview mode
+ */
+function renderTripBarsForDate(dateStr) {
+    if (typeof ALL_TRIPS === 'undefined' || !ALL_TRIPS) return '';
+    
+    const today = new Date().toISOString().split('T')[0];
+    let html = '';
+    let barIndex = 0;
+    
+    ALL_TRIPS.forEach(trip => {
+        if (dateStr >= trip.start_date && dateStr <= trip.end_date) {
+            // Determine trip status
+            let statusClass = '';
+            if (trip.start_date > today) {
+                statusClass = 'upcoming';
+            } else if (trip.end_date < today) {
+                statusClass = 'completed';
+            } else {
+                statusClass = 'ongoing';
+            }
+            
+            // Position bars vertically (bottom: 2px, 8px, 14px, etc.)
+            const bottomPos = 2 + (barIndex * 6);
+            
+            html += `<div class="trip-bar ${statusClass}" 
+                          style="bottom: ${bottomPos}px;"
+                          title="${escapeHtml(trip.name)}"
+                          onclick="window.location.href='itinerary.php?trip_id=${trip.id}'"></div>`;
+            
+            barIndex++;
+        }
+    });
+    
+    return html;
 }
