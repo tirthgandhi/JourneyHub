@@ -40,6 +40,38 @@ $stmt2 = getPDO()->prepare(
 $stmt2->execute([$trip_id]);
 $stops = $stmt2->fetchAll();
 
+// 4. Fetch all activities grouped by date for day-by-day view
+$dayByDayActivities = [];
+$tripActivityTotal = 0;
+
+if (!empty($stops)) {
+    $stmt3 = getPDO()->prepare(
+        "SELECT ta.activity_date, ta.activity_time, a.name, a.cost, a.type, c.city_name
+         FROM trip_activities ta
+         JOIN activities a ON a.id = ta.activity_id
+         JOIN trip_stops ts ON ts.id = ta.trip_stop_id
+         JOIN cities c ON c.id = ts.city_id
+         WHERE ts.trip_id = ?
+         ORDER BY ta.activity_date ASC, ta.activity_time ASC"
+    );
+    $stmt3->execute([$trip_id]);
+    $activities = $stmt3->fetchAll();
+    
+    // Group by date
+    foreach ($activities as $activity) {
+        $date = $activity['activity_date'];
+        if (!isset($dayByDayActivities[$date])) {
+            $dayByDayActivities[$date] = [
+                'activities' => [],
+                'total' => 0
+            ];
+        }
+        $dayByDayActivities[$date]['activities'][] = $activity;
+        $dayByDayActivities[$date]['total'] += $activity['cost'];
+        $tripActivityTotal += $activity['cost'];
+    }
+}
+
 $currentPage = 'itinerary';
 ?>
 <!DOCTYPE html>
@@ -241,6 +273,76 @@ $currentPage = 'itinerary';
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
+                
+                <!-- Day-by-Day View Section -->
+                <?php if (!empty($dayByDayActivities)): ?>
+                    <div class="day-by-day-section" style="margin-top: 32px;">
+                        <div class="section-header">
+                            <h2>Day-by-Day View</h2>
+                            <button class="btn btn-sm btn-secondary" onclick="toggleDayByDayView()" id="toggle-day-view-btn">
+                                Show Day-by-Day
+                            </button>
+                        </div>
+                        
+                        <div class="day-by-day-content hidden" id="day-by-day-content">
+                            <?php 
+                            $dayNumber = 1;
+                            foreach ($dayByDayActivities as $date => $dayData): 
+                            ?>
+                                <div class="day-section">
+                                    <div class="day-header">
+                                        <h3>Day <?= $dayNumber ?> — <?= date('d M Y', strtotime($date)) ?></h3>
+                                    </div>
+                                    <div class="day-activities">
+                                        <?php foreach ($dayData['activities'] as $activity): ?>
+                                            <div class="day-activity-item">
+                                                <span class="activity-icon">
+                                                    <?php
+                                                    $icons = [
+                                                        'sightseeing' => '🏛',
+                                                        'food' => '🍽',
+                                                        'adventure' => '⛰',
+                                                        'culture' => '🎭',
+                                                        'shopping' => '🛍',
+                                                        'entertainment' => '🎪',
+                                                        'nature' => '🌳'
+                                                    ];
+                                                    echo $icons[$activity['type']] ?? '📍';
+                                                    ?>
+                                                </span>
+                                                <span class="activity-name"><?= htmlspecialchars($activity['name']) ?></span>
+                                                <span class="activity-city"><?= htmlspecialchars($activity['city_name']) ?></span>
+                                                <?php if ($activity['activity_time']): ?>
+                                                    <span class="activity-time"><?= date('g:i A', strtotime($activity['activity_time'])) ?></span>
+                                                <?php endif; ?>
+                                                <span class="activity-cost">₹<?= number_format($activity['cost'], 0, '.', ',') ?></span>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <div class="day-total">
+                                        <strong>Day <?= $dayNumber ?> Total:</strong>
+                                        <span>₹<?= number_format($dayData['total'], 0, '.', ',') ?></span>
+                                    </div>
+                                </div>
+                            <?php 
+                            $dayNumber++;
+                            endforeach; 
+                            ?>
+                            
+                            <div class="trip-total-section">
+                                <div class="trip-total">
+                                    <strong>Trip Activity Total:</strong>
+                                    <span class="total-amount">₹<?= number_format($tripActivityTotal, 0, '.', ',') ?></span>
+                                </div>
+                                <div class="budget-link">
+                                    <a href="budget.php?trip_id=<?= htmlspecialchars($trip['id']) ?>" class="btn btn-sm btn-primary">
+                                        See full Budget breakdown →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </main>

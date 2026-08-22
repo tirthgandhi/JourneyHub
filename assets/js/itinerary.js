@@ -383,3 +383,22 @@ function setupDateValidation() {
         }
     });
 }
+
+
+/**
+ * Toggle Day-by-Day View
+ */
+function toggleDayByDayView() {
+    const content = document.getElementById('day-by-day-content');
+    const button = document.getElementById('toggle-day-view-btn');
+    
+    if (!content || !button) return;
+    
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        button.textContent = 'Hide Day-by-Day';
+    } else {
+        content.classList.add('hidden');
+        button.textContent = 'Show Day-by-Day';
+    }
+}
