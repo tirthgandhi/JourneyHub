@@ -26,6 +26,19 @@ $userName = htmlspecialchars($_SESSION['name'] ?? 'User');
                    class="<?php echo ($currentPage ?? '') === 'my-trips' ? 'active' : ''; ?>"
                    id="nav-my-trips">My Trips</a>
             </li>
+            <?php
+            // Show Admin link only for admin users (cosmetic only - real security is in backend)
+            if (isset($_SESSION['user_id'])) {
+                require_once __DIR__ . '/../config/db.php';
+                $stmt = getPDO()->prepare("SELECT role FROM users WHERE id = ?");
+                $stmt->execute([$_SESSION['user_id']]);
+                $user = $stmt->fetch();
+                if ($user && $user['role'] === 'admin') {
+                    $adminActive = in_array($currentPage ?? '', ['admin-dashboard', 'admin-users', 'admin-trips']);
+                    echo '<li><a href="/JourneyHub/admin/index.php" class="' . ($adminActive ? 'active' : '') . '" id="nav-admin">Admin</a></li>';
+                }
+            }
+            ?>
         </ul>
 
         <div class="navbar-user">
