@@ -27,6 +27,8 @@ $name        = trim($_POST['name'] ?? '');
 $description = trim($_POST['description'] ?? '');
 $startDate   = trim($_POST['start_date'] ?? '');
 $endDate     = trim($_POST['end_date'] ?? '');
+$budget      = trim($_POST['budget'] ?? '0');
+$destinations = isset($_POST['destinations']) ? json_decode($_POST['destinations'], true) : [];
 
 if ($name === '') {
     $errors[] = 'Trip name is required.';
@@ -45,6 +47,11 @@ if ($startDate !== '' && $endDate !== '') {
     if (strtotime($endDate) < strtotime($startDate)) {
         $errors[] = 'End date must be on or after the start date.';
     }
+}
+
+// Validate budget
+if ($budget !== '' && (!is_numeric($budget) || $budget < 0)) {
+    $errors[] = 'Budget must be a positive number.';
 }
 
 // --- Handle cover photo upload ---
@@ -96,11 +103,25 @@ if (!empty($errors)) {
 
 // --- Insert trip ---
 $stmt = $pdo->prepare('
-    INSERT INTO trips (user_id, name, description, start_date, end_date, cover_image)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO trips (user_id, name, description, start_date, end_date, budget, cover_image)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
 ');
-$stmt->execute([$userId, $name, $description, $startDate, $endDate, $coverFilename]);
+$stmt->execute([$userId, $name, $description, $startDate, $endDate, $budget, $coverFilename]);
 
 $tripId = $pdo->lastInsertId();
+
+// --- Insert trip stops (destinations) ---
+if (!empty($destinations) && is_array($destinations)) {
+    $stmtStop = $pdo->prepare('
+        INSERT INTO trip_stops (trip_id, city_id, start_date, end_date, stop_order)
+        VALUES (?, ?, ?, ?, ?)
+    ');
+    
+    foreach ($destinations as $index => $cityId) {
+        // For now, use trip start/end dates for each stop
+        // In future iterations, users can specify individual stop dates
+        $stmtStop->execute([$tripId, $cityId, $startDate, $endDate, $index + 1]);
+    }
+}
 
 echo json_encode(['success' => true, 'trip_id' => (int) $tripId]);

@@ -89,6 +89,11 @@ async function handleTripFormSubmit(e) {
     if (mode === 'edit') {
         formData.append('trip_id', tripId);
     }
+    
+    // Add selected destinations to FormData
+    if (typeof selectedDestinations !== 'undefined' && selectedDestinations.length > 0) {
+        formData.append('destinations', JSON.stringify(selectedDestinations.map(d => d.id)));
+    }
 
     // ── Determine API endpoint ──
     const url = mode === 'edit'
