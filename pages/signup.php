@@ -1,98 +1,64 @@
 <?php
 /**
- * Signup Page
- * User registration with validation
+ * Signup Page — JourneyHub
  */
 
 session_start();
 
-// Redirect if already logged in
+// Already logged in? Go to dashboard
 if (isset($_SESSION['user_id'])) {
     header('Location: /JourneyHub/pages/dashboard.php');
     exit;
 }
 
-require_once '../config/database.php';
-require_once '../includes/auth-check.php';
-
 $errors = [];
-$success = '';
-$form_data = [
-    'name' => '',
-    'email' => ''
-];
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $confirm_password = $_POST['confirm_password'] ?? '';
-    
-    // Store form data for repopulation
-    $form_data['name'] = $name;
-    $form_data['email'] = $email;
-    
-    // Backend validation
-    if (empty($name)) {
-        $errors[] = 'Name is required';
-    } elseif (strlen($name) < 2) {
-        $errors[] = 'Name must be at least 2 characters';
+    require_once __DIR__ . '/../config/db.php';
+
+    $name            = trim($_POST['name'] ?? '');
+    $email           = trim($_POST['email'] ?? '');
+    $password        = $_POST['password'] ?? '';
+    $confirmPassword = $_POST['confirm_password'] ?? '';
+
+    // Validate inputs
+    if ($name === '') {
+        $errors[] = 'Name is required.';
     }
-    
-    if (empty($email)) {
-        $errors[] = 'Email is required';
+    if ($email === '') {
+        $errors[] = 'Email is required.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Invalid email format';
+        $errors[] = 'Please enter a valid email address.';
     }
-    
-    if (empty($password)) {
-        $errors[] = 'Password is required';
-    } elseif (strlen($password) < 8) {
-        $errors[] = 'Password must be at least 8 characters';
+    if ($password === '') {
+        $errors[] = 'Password is required.';
+    } elseif (strlen($password) < 6) {
+        $errors[] = 'Password must be at least 6 characters.';
     }
-    
-    if ($password !== $confirm_password) {
-        $errors[] = 'Passwords do not match';
+    if ($password !== $confirmPassword) {
+        $errors[] = 'Passwords do not match.';
     }
-    
-    // Check if email already exists
+
     if (empty($errors)) {
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+        // Check for duplicate email
+        $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
         $stmt->execute([$email]);
+
         if ($stmt->fetch()) {
-            $errors[] = 'Email address is already registered';
-        }
-    }
-    
-    // If no errors, create user
-    if (empty($errors)) {
-        try {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            
-            $stmt = $pdo->prepare("
-                INSERT INTO users (name, email, password, role) 
-                VALUES (?, ?, ?, 'user')
-            ");
-            $stmt->execute([$name, $email, $hashed_password]);
-            
-            // Get the new user's ID
-            $user_id = $pdo->lastInsertId();
-            
-            // Create session
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['user_name'] = $name;
-            $_SESSION['user_email'] = $email;
-            $_SESSION['role'] = 'user';
-            $_SESSION['profile_photo'] = null;
-            
-            // Redirect to dashboard
+            $errors[] = 'An account with this email already exists.';
+        } else {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
+            $stmt->execute([$name, $email, $hashedPassword]);
+
+            // Auto-login after signup
+            $userId = $pdo->lastInsertId();
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['name']    = $name;
+            $_SESSION['email']   = $email;
+
             header('Location: /JourneyHub/pages/dashboard.php');
             exit;
-            
-        } catch (PDOException $e) {
-            $errors[] = 'Registration failed. Please try again.';
-            // Log error for debugging: error_log($e->getMessage());
         }
     }
 }
@@ -102,103 +68,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - JourneyHub</title>
+    <title>Sign Up — JourneyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/auth.css">
 </head>
-<body>
+<body class="auth-body">
     <div class="auth-container">
         <div class="auth-card">
-            <div class="auth-header">
-                <h1>Create Account</h1>
-                <p>Join JourneyHub and start planning your adventures</p>
-            </div>
-            
+            <h1 class="auth-logo">JourneyHub</h1>
+            <p class="auth-subtitle">Create your account and start planning trips.</p>
+
             <?php if (!empty($errors)): ?>
-                <div class="alert alert-error">
-                    <ul>
-                        <?php foreach ($errors as $error): ?>
-                            <li><?php echo escape_html($error); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <div class="auth-errors">
+                    <?php foreach ($errors as $error): ?>
+                        <p><?php echo htmlspecialchars($error); ?></p>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
-            
-            <?php if (!empty($success)): ?>
-                <div class="alert alert-success">
-                    <?php echo escape_html($success); ?>
-                </div>
-            <?php endif; ?>
-            
-            <form id="signup-form" method="POST" action="" novalidate>
+
+            <form method="POST" action="" class="auth-form" id="signup-form">
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        name="name" 
-                        class="form-control"
-                        value="<?php echo escape_html($form_data['name']); ?>"
-                        required
-                    >
-                    <span class="error-message" id="name-error"></span>
+                    <input type="text" id="name" name="name"
+                           value="<?php echo htmlspecialchars($name ?? ''); ?>"
+                           placeholder="Your full name" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        class="form-control"
-                        value="<?php echo escape_html($form_data['email']); ?>"
-                        required
-                    >
-                    <span class="error-message" id="email-error"></span>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email"
+                           value="<?php echo htmlspecialchars($email ?? ''); ?>"
+                           placeholder="you@example.com" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        class="form-control"
-                        required
-                    >
-                    <small class="form-hint">Must be at least 8 characters</small>
-                    <span class="error-message" id="password-error"></span>
+                    <input type="password" id="password" name="password"
+                           placeholder="At least 6 characters" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="confirm_password">Confirm Password</label>
-                    <input 
-                        type="password" 
-                        id="confirm_password" 
-                        name="confirm_password" 
-                        class="form-control"
-                        required
-                    >
-                    <span class="error-message" id="confirm-password-error"></span>
+                    <input type="password" id="confirm_password" name="confirm_password"
+                           placeholder="Re-enter your password" required>
                 </div>
-                
-                <button type="submit" class="btn btn-primary btn-block">
-                    Create Account
-                </button>
+                <button type="submit" class="btn btn-primary btn-block" id="signup-btn">Create Account</button>
             </form>
-            
-            <div class="auth-footer">
-                <p>Already have an account? <a href="/JourneyHub/pages/login.php">Sign in</a></p>
-            </div>
+            <p class="auth-footer">
+                Already have an account?
+                <a href="/JourneyHub/pages/login.php">Log in</a>
+            </p>
         </div>
     </div>
-    
-    <script src="/JourneyHub/assets/js/auth.js"></script>
-    <script>
-        // Initialize signup form validation
-        if (typeof AuthValidator !== 'undefined') {
-            AuthValidator.initSignup();
-        }
-    </script>
 </body>
 </html>
