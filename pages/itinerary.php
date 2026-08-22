@@ -16,9 +16,9 @@ if (!$trip_id) {
     exit;
 }
 
-// 2. Verify ownership and fetch trip
+// 2. Verify ownership and fetch trip (including sharing info)
 $stmt = getPDO()->prepare(
-    "SELECT id, name, start_date, end_date, description 
+    "SELECT id, name, start_date, end_date, description, is_public, share_token 
      FROM trips WHERE id = ? AND user_id = ?"
 );
 $stmt->execute([$trip_id, $_SESSION['user_id']]);
@@ -53,6 +53,7 @@ $currentPage = 'itinerary';
     <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/itinerary.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/activities.css">
+    <link rel="stylesheet" href="/JourneyHub/assets/css/sharing.css">
 </head>
 <body>
     <?php require_once __DIR__ . '/../includes/navbar.php'; ?>
@@ -73,7 +74,54 @@ $currentPage = 'itinerary';
             <div class="trip-nav-links">
                 <a href="budget.php?trip_id=<?= htmlspecialchars($trip['id']) ?>" class="btn btn-secondary">💰 Budget</a>
                 <a href="calendar.php?trip_id=<?= htmlspecialchars($trip['id']) ?>" class="btn btn-secondary">📅 Calendar</a>
+                <button class="btn btn-secondary" onclick="toggleSharePanel()">🔗 Share Trip</button>
             </div>
+        </div>
+
+        <!-- Share Panel -->
+        <div class="share-panel hidden" id="share-panel">
+            <h3>Share Trip</h3>
+            
+            <?php
+            // Build share URL if trip is shared
+            $shareUrl = '';
+            if ($trip['is_public'] && !empty($trip['share_token'])) {
+                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'];
+                $basePath = dirname(dirname($_SERVER['SCRIPT_NAME'])); // removes /pages
+                $shareUrl = $protocol . '://' . $host . $basePath . '/pages/shared-trip.php?token=' . $trip['share_token'];
+            }
+            ?>
+            
+            <div id="share-url-container">
+                <?php if ($shareUrl): ?>
+                    <input type="text" 
+                           class="share-url-input" 
+                           id="share-url-input"
+                           value="<?= htmlspecialchars($shareUrl) ?>" 
+                           readonly>
+                <?php endif; ?>
+            </div>
+            
+            <div id="share-actions" class="share-actions">
+                <?php if ($shareUrl): ?>
+                    <button class="btn btn-primary" onclick="copyShareLink()">
+                        📋 Copy Link
+                    </button>
+                    <button class="btn btn-danger" onclick="disableSharing()">
+                        🔒 Disable Sharing
+                    </button>
+                    <span class="share-success-msg" id="copy-success" style="display: none;">
+                        ✓ Link copied!
+                    </span>
+                <?php else: ?>
+                    <button class="btn btn-primary" id="generate-share-btn" onclick="generateShareLink()">
+                        🔗 Generate Share Link
+                    </button>
+                <?php endif; ?>
+            </div>
+            
+            <div class="share-error-msg" id="share-error" style="display: none;"></div>
         </div>
 
         <div class="itinerary-layout">
@@ -209,5 +257,6 @@ $currentPage = 'itinerary';
     <script src="/JourneyHub/assets/js/cities.js"></script>
     <script src="/JourneyHub/assets/js/itinerary.js"></script>
     <script src="/JourneyHub/assets/js/activities.js"></script>
+    <script src="/JourneyHub/assets/js/sharing.js"></script>
 </body>
 </html>

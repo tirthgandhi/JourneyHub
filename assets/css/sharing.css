@@ -1,0 +1,397 @@
+/**
+ * Trip Sharing Styles — JourneyHub
+ * 
+ * Styles for the share panel and public shared trip page
+ * Uses existing CSS variables from style.css
+ */
+
+/* ── Share Panel (on itinerary page) ── */
+.share-panel {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.share-panel.hidden {
+    display: none;
+}
+
+.share-panel h3 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.share-url-container {
+    margin-bottom: 16px;
+}
+
+.share-url-input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background-color: var(--color-input-bg);
+    color: var(--color-text);
+    cursor: text;
+}
+
+.share-url-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.share-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.share-success-msg {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background-color: #d1fae5;
+    color: var(--color-success);
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease;
+}
+
+.share-error-msg {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: var(--radius);
+    color: var(--color-danger);
+    font-size: 0.85rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Public Shared Trip Page ── */
+.shared-trip-body {
+    background-color: var(--color-bg);
+    padding: 20px;
+}
+
+.shared-trip-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Error State */
+.shared-trip-error {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.shared-trip-error h1 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    color: var(--color-text);
+}
+
+.shared-trip-error p {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+}
+
+/* Trip Header */
+.shared-trip-header {
+    background-color: var(--color-surface);
+    padding: 32px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 24px;
+}
+
+.shared-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+.shared-trip-header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: var(--color-text);
+}
+
+.trip-dates {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 16px;
+}
+
+.trip-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-top: 16px;
+}
+
+/* Empty State */
+.shared-trip-empty {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-muted);
+}
+
+/* Itinerary Section */
+.shared-trip-itinerary {
+    margin-bottom: 24px;
+}
+
+.shared-trip-itinerary h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--color-text);
+}
+
+/* Stop Cards */
+.shared-stop-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition);
+}
+
+.shared-stop-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.shared-stop-header {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.stop-number-badge {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.stop-info {
+    flex: 1;
+}
+
+.stop-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+    color: var(--color-text);
+}
+
+.stop-location {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+}
+
+.stop-dates {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+/* Activities */
+.shared-activities {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+}
+
+.shared-activities h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--color-text);
+}
+
+.activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-name {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.activity-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+/* Budget Section */
+.shared-trip-budget {
+    background-color: var(--color-surface);
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+
+.shared-trip-budget h2 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--color-text);
+}
+
+.budget-summary {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.budget-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.budget-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.budget-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* Footer */
+.shared-trip-footer {
+    text-align: center;
+    padding: 32px 20px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.shared-trip-footer p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 16px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .shared-trip-header {
+        padding: 24px 20px;
+    }
+    
+    .shared-trip-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .shared-stop-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .stop-number-badge {
+        align-self: flex-start;
+    }
+    
+    .activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .activity-meta {
+        white-space: normal;
+    }
+    
+    .share-actions {
+        flex-direction: column;
+    }
+    
+    .share-actions .btn {
+        width: 100%;
+    }
+    
+    .budget-summary {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .shared-trip-body {
+        padding: 12px;
+    }
+    
+    .shared-stop-card {
+        padding: 16px;
+    }
+    
+    .shared-trip-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .stop-info h3 {
+        font-size: 1.1rem;
+    }
+}
