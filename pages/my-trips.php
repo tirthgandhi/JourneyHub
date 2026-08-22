@@ -31,7 +31,7 @@ $currentPage = 'my-trips';
     <title>My Trips — JourneyHub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">
+    <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">`n    <link rel="stylesheet" href="/JourneyHub/assets/css/navbar.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/dashboard.css">
 </head>
 <body>
