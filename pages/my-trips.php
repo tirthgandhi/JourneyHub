@@ -79,6 +79,8 @@ $currentPage = 'my-trips';
                             <p class="trip-destinations">0 destinations</p>
                         </div>
                         <div class="trip-card-actions">
+                            <a href="/JourneyHub/pages/itinerary.php?trip_id=<?php echo $trip['id']; ?>"
+                               class="btn btn-sm btn-primary" id="btn-view-<?php echo $trip['id']; ?>">View</a>
                             <a href="/JourneyHub/pages/create-trip.php?edit=<?php echo $trip['id']; ?>"
                                class="btn btn-sm btn-secondary" id="btn-edit-<?php echo $trip['id']; ?>">Edit</a>
                             <button class="btn btn-sm btn-danger btn-delete-trip"

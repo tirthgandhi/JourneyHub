@@ -49,5 +49,12 @@ function getDBConnection() {
     }
 }
 
+/**
+ * Alias for backward compatibility
+ */
+function getPDO() {
+    return getDBConnection();
+}
+
 // Initialize connection and make it available as $pdo for scripts that include this file
 $pdo = getDBConnection();
