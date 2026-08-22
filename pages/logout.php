@@ -1,22 +1,13 @@
 <?php
 /**
- * Logout Script
- * Destroys session and redirects to login
+ * Logout — JourneyHub
+ *
+ * Destroys the session and redirects to the login page.
  */
 
 session_start();
-
-// Clear all session variables
-$_SESSION = [];
-
-// Destroy the session cookie
-if (isset($_COOKIE[session_name()])) {
-    setcookie(session_name(), '', time() - 3600, '/');
-}
-
-// Destroy the session
+session_unset();
 session_destroy();
 
-// Redirect to login page
 header('Location: /JourneyHub/pages/login.php');
 exit;

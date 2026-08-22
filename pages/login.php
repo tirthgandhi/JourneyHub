@@ -1,64 +1,47 @@
 <?php
 /**
- * Login Page
- * User authentication
+ * Login Page — JourneyHub
  */
 
 session_start();
 
-// Redirect if already logged in
+// Already logged in? Go to dashboard
 if (isset($_SESSION['user_id'])) {
     header('Location: /JourneyHub/pages/dashboard.php');
     exit;
 }
 
-require_once '../config/database.php';
-require_once '../includes/auth-check.php';
-
 $errors = [];
-$email = '';
-$redirect = $_GET['redirect'] ?? '/JourneyHub/pages/dashboard.php';
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
+    require_once __DIR__ . '/../config/db.php';
+
+    $email    = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
-    
-    // Basic validation
-    if (empty($email)) {
-        $errors[] = 'Email is required';
+
+    // Validate inputs
+    if ($email === '') {
+        $errors[] = 'Email is required.';
     }
-    
-    if (empty($password)) {
-        $errors[] = 'Password is required';
+    if ($password === '') {
+        $errors[] = 'Password is required.';
     }
-    
-    // Attempt authentication
+
     if (empty($errors)) {
-        try {
-            $stmt = $pdo->prepare("SELECT id, name, email, password, role, profile_photo FROM users WHERE email = ?");
-            $stmt->execute([$email]);
-            $user = $stmt->fetch();
-            
-            if ($user && password_verify($password, $user['password'])) {
-                // Successful login - create session
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['name'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['role'] = $user['role'];
-                $_SESSION['profile_photo'] = $user['profile_photo'];
-                
-                // Redirect to requested page or dashboard
-                header('Location: ' . $redirect);
-                exit;
-            } else {
-                // Generic error message for security (don't reveal if email exists)
-                $errors[] = 'Invalid email or password';
-            }
-            
-        } catch (PDOException $e) {
-            $errors[] = 'Login failed. Please try again.';
-            // Log error for debugging: error_log($e->getMessage());
+        $stmt = $pdo->prepare('SELECT id, name, email, password FROM users WHERE email = ?');
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['password'])) {
+            // Set session variables
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['name']    = $user['name'];
+            $_SESSION['email']   = $user['email'];
+
+            header('Location: /JourneyHub/pages/dashboard.php');
+            exit;
+        } else {
+            $errors[] = 'Invalid email or password.';
         }
     }
 }
@@ -68,78 +51,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - JourneyHub</title>
+    <title>Login — JourneyHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/auth.css">
 </head>
-<body>
+<body class="auth-body">
     <div class="auth-container">
         <div class="auth-card">
-            <div class="auth-header">
-                <h1>Welcome Back</h1>
-                <p>Sign in to continue your journey</p>
-            </div>
-            
+            <h1 class="auth-logo">JourneyHub</h1>
+            <p class="auth-subtitle">Welcome back — log in to plan your next adventure.</p>
+
             <?php if (!empty($errors)): ?>
-                <div class="alert alert-error">
-                    <ul>
-                        <?php foreach ($errors as $error): ?>
-                            <li><?php echo escape_html($error); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                <div class="auth-errors">
+                    <?php foreach ($errors as $error): ?>
+                        <p><?php echo htmlspecialchars($error); ?></p>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
-            
-            <form id="login-form" method="POST" action="" novalidate>
-                <input type="hidden" name="redirect" value="<?php echo escape_html($redirect); ?>">
-                
+
+            <form method="POST" action="" class="auth-form" id="login-form">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        class="form-control"
-                        value="<?php echo escape_html($email); ?>"
-                        required
-                        autofocus
-                    >
-                    <span class="error-message" id="email-error"></span>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email"
+                           value="<?php echo htmlspecialchars($email ?? ''); ?>"
+                           placeholder="you@example.com" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        class="form-control"
-                        required
-                    >
-                    <span class="error-message" id="password-error"></span>
+                    <input type="password" id="password" name="password"
+                           placeholder="Your password" required>
                 </div>
-                
-                <div class="form-options">
-                    <a href="/JourneyHub/pages/forgot-password.php" class="forgot-link">Forgot password?</a>
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-block">
-                    Sign In
-                </button>
+                <button type="submit" class="btn btn-primary btn-block" id="login-btn">Log In</button>
             </form>
-            
-            <div class="auth-footer">
-                <p>Don't have an account? <a href="/JourneyHub/pages/signup.php">Sign up</a></p>
-            </div>
+            <p class="auth-footer">
+                Don't have an account?
+                <a href="/JourneyHub/pages/signup.php">Sign up</a>
+            </p>
         </div>
     </div>
-    
-    <script src="/JourneyHub/assets/js/auth.js"></script>
-    <script>
-        // Initialize login form validation
-        if (typeof AuthValidator !== 'undefined') {
-            AuthValidator.initLogin();
-        }
-    </script>
 </body>
 </html>
