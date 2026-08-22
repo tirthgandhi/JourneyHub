@@ -158,6 +158,13 @@ ALTER TABLE trips ADD COLUMN budget DECIMAL(10,2) DEFAULT 0.00 AFTER end_date;
 ALTER TABLE expenses ADD COLUMN expense_date DATE NULL AFTER amount;
 
 -- ====================================================================
+-- BRANCH 8 ADDITIONS: Admin Dashboard Support
+-- ====================================================================
+
+-- Add status column to users table for deactivate/reactivate functionality
+ALTER TABLE users ADD COLUMN status ENUM('active','inactive') DEFAULT 'active' AFTER role;
+
+-- ====================================================================
 -- Schema creation complete!
 -- Next: Run seed.sql to populate with test data
 -- ====================================================================
