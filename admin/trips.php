@@ -27,6 +27,7 @@ $currentPage = 'admin-trips';
     <title>Trip Management — Admin — JourneyHub</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">
+    <link rel="stylesheet" href="/JourneyHub/assets/css/components.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/admin.css">
 </head>
 <body>
