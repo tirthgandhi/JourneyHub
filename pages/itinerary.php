@@ -52,6 +52,7 @@ $currentPage = 'itinerary';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/JourneyHub/assets/css/style.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/itinerary.css">
+    <link rel="stylesheet" href="/JourneyHub/assets/css/activities.css">
 </head>
 <body>
     <?php require_once __DIR__ . '/../includes/navbar.php'; ?>
@@ -185,12 +186,6 @@ $currentPage = 'itinerary';
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
-                
-                <?php if (!empty($stops)): ?>
-                    <div class="itinerary-footer">
-                        <a href="#" class="btn btn-primary">+ Add Activities →</a>
-                    </div>
-                <?php endif; ?>
             </div>
         </div>
     </main>
@@ -204,8 +199,8 @@ $currentPage = 'itinerary';
         // Track which cities are already added (for disabling Add buttons)
         const addedCityIds = new Set(<?= json_encode(array_column($stops, 'city_id')) ?>);
     </script>
-    
     <script src="/JourneyHub/assets/js/cities.js"></script>
     <script src="/JourneyHub/assets/js/itinerary.js"></script>
+    <script src="/JourneyHub/assets/js/activities.js"></script>
 </body>
 </html>
