@@ -65,6 +65,46 @@ $currentPage = 'admin-users';
                     </div>
                 </div>
 
+                <!-- Filter and Sort Controls -->
+                <div class="filter-controls">
+                    <div>
+                        <label for="filter-role">Role:</label>
+                        <select id="filter-role">
+                            <option value="">All Roles</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="filter-status">Status:</label>
+                        <select id="filter-status">
+                            <option value="">All Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="sort-by">Sort by:</label>
+                        <select id="sort-by">
+                            <option value="created_at">Joined Date</option>
+                            <option value="name">Name</option>
+                            <option value="email">Email</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="sort-order">Order:</label>
+                        <select id="sort-order">
+                            <option value="DESC">Newest First</option>
+                            <option value="ASC">Oldest First</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-secondary" id="apply-filters">Apply Filters</button>
+                </div>
+
                 <div id="loading" style="display: none; padding: 20px; text-align: center;">
                     Loading...
                 </div>
