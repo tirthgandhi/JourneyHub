@@ -59,14 +59,21 @@ $currentPage = 'itinerary';
 
     <main class="itinerary-main">
         <div class="itinerary-header">
-            <h1><?= htmlspecialchars($trip['name']) ?></h1>
-            <p class="trip-dates">
-                <?= date('M d, Y', strtotime($trip['start_date'])) ?> → 
-                <?= date('M d, Y', strtotime($trip['end_date'])) ?>
-            </p>
-            <?php if ($trip['description']): ?>
-                <p class="trip-description"><?= htmlspecialchars($trip['description']) ?></p>
-            <?php endif; ?>
+            <div class="header-content">
+                <h1><?= htmlspecialchars($trip['name']) ?></h1>
+                <p class="trip-dates">
+                    <?= date('M d, Y', strtotime($trip['start_date'])) ?> → 
+                    <?= date('M d, Y', strtotime($trip['end_date'])) ?>
+                </p>
+                <?php if ($trip['description']): ?>
+                    <p class="trip-description"><?= htmlspecialchars($trip['description']) ?></p>
+                <?php endif; ?>
+            </div>
+            
+            <div class="trip-nav-links">
+                <a href="budget.php?trip_id=<?= htmlspecialchars($trip['id']) ?>" class="btn btn-secondary">💰 Budget</a>
+                <a href="calendar.php?trip_id=<?= htmlspecialchars($trip['id']) ?>" class="btn btn-secondary">📅 Calendar</a>
+            </div>
         </div>
 
         <div class="itinerary-layout">

@@ -16,14 +16,31 @@
 
 .itinerary-header {
     margin-bottom: 32px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
 }
 
-.itinerary-header h1 {
+.header-content {
+    flex: 1;
+}
+
+.header-content h1 {
     font-size: 2rem;
     font-weight: 700;
     color: var(--color-text);
     margin-bottom: 8px;
+}
+
+.trip-nav-links {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.trip-nav-links .btn {
+    white-space: nowrap;
 }
 
 .trip-dates {
