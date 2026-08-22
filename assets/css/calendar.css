@@ -155,3 +155,104 @@
         font-size: 0.9rem;
     }
 }
+
+
+/* ── All-Trips Overview Mode ── */
+.trip-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.trip-group {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.trip-group h3 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.trip-group.ongoing h3 {
+    color: var(--color-success);
+    border-bottom-color: var(--color-success);
+}
+
+.trip-group.upcoming h3 {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.trip-group.completed h3 {
+    color: var(--color-text-muted);
+    border-bottom-color: var(--color-border);
+}
+
+.trip-group-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: var(--color-input-bg);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.trip-group-item:hover {
+    background-color: var(--color-border);
+    transform: translateX(4px);
+}
+
+.trip-group-item strong {
+    color: var(--color-text);
+    font-size: 1rem;
+}
+
+.trip-group-item span {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+/* ── Trip Bars on Calendar ── */
+.trip-bar {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    height: 4px;
+    background-color: var(--color-primary);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--transition);
+    z-index: 1;
+}
+
+.trip-bar:hover {
+    height: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.trip-bar.ongoing {
+    background-color: var(--color-success);
+}
+
+.trip-bar.completed {
+    background-color: var(--color-text-muted);
+}
+
+/* ── Responsive Calendar ── */
+@media (max-width: 768px) {
+    .trip-groups {
+        grid-template-columns: 1fr;
+    }
+}

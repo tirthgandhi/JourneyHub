@@ -66,6 +66,37 @@ $currentPage = 'admin-trips';
                     </div>
                 </div>
 
+                <!-- Filter and Sort Controls -->
+                <div class="filter-controls">
+                    <div>
+                        <label for="filter-visibility">Visibility:</label>
+                        <select id="filter-visibility">
+                            <option value="">All Trips</option>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="sort-by">Sort by:</label>
+                        <select id="sort-by">
+                            <option value="created_at">Created Date</option>
+                            <option value="name">Trip Name</option>
+                            <option value="owner_name">Owner Name</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="sort-order">Order:</label>
+                        <select id="sort-order">
+                            <option value="DESC">Newest First</option>
+                            <option value="ASC">Oldest First</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-secondary" id="apply-trip-filters">Apply Filters</button>
+                </div>
+
                 <div id="loading" style="display: none; padding: 20px; text-align: center;">
                     Loading...
                 </div>

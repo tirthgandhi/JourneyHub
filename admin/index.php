@@ -47,6 +47,34 @@ $stmt = $pdo->query("
 ");
 $recent_trips = $stmt->fetchAll();
 
+// Popular Cities (Top 10 by trip count)
+$stmt = $pdo->query("
+    SELECT c.name, COUNT(DISTINCT ts.trip_id) as trip_count
+    FROM cities c
+    JOIN trip_stops ts ON ts.city_id = c.id
+    GROUP BY c.id, c.name
+    ORDER BY trip_count DESC
+    LIMIT 10
+");
+$popular_cities = $stmt->fetchAll();
+
+// Find max count for chart scaling
+$max_city_count = !empty($popular_cities) ? $popular_cities[0]['trip_count'] : 1;
+
+// Popular Activities (Top 10 by usage count)
+$stmt = $pdo->query("
+    SELECT a.name, COUNT(ta.id) as usage_count
+    FROM activities a
+    JOIN trip_activities ta ON ta.activity_id = a.id
+    GROUP BY a.id, a.name
+    ORDER BY usage_count DESC
+    LIMIT 10
+");
+$popular_activities = $stmt->fetchAll();
+
+// Find max count for chart scaling
+$max_activity_count = !empty($popular_activities) ? $popular_activities[0]['usage_count'] : 1;
+
 $currentPage = 'admin-dashboard';
 ?>
 <!DOCTYPE html>
@@ -143,6 +171,49 @@ $currentPage = 'admin-dashboard';
                                     </div>
                                     <div class="item-date">
                                         <?= date('M j, Y', strtotime($trip['created_at'])) ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Charts -->
+            <div class="analytics-grid">
+                <div class="analytics-section">
+                    <h2>Popular Cities</h2>
+                    <div class="chart-container">
+                        <?php if (empty($popular_cities)): ?>
+                            <p class="no-data">No city data available</p>
+                        <?php else: ?>
+                            <?php foreach ($popular_cities as $city): ?>
+                                <div class="chart-bar-row">
+                                    <div class="chart-label"><?= htmlspecialchars($city['name']) ?></div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar" style="width: <?= ($city['trip_count'] / $max_city_count) * 100 ?>%">
+                                            <span class="chart-value"><?= $city['trip_count'] ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="analytics-section">
+                    <h2>Popular Activities</h2>
+                    <div class="chart-container">
+                        <?php if (empty($popular_activities)): ?>
+                            <p class="no-data">No activity data available</p>
+                        <?php else: ?>
+                            <?php foreach ($popular_activities as $activity): ?>
+                                <div class="chart-bar-row">
+                                    <div class="chart-label"><?= htmlspecialchars($activity['name']) ?></div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar" style="width: <?= ($activity['usage_count'] / $max_activity_count) * 100 ?>%">
+                                            <span class="chart-value"><?= $activity['usage_count'] ?></span>
+                                        </div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

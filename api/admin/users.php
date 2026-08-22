@@ -41,6 +41,21 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         $q = isset($_GET['q']) ? trim($_GET['q']) : '';
+        $role = isset($_GET['role']) ? trim($_GET['role']) : '';
+        $status = isset($_GET['status']) ? trim($_GET['status']) : '';
+        $sortBy = isset($_GET['sort_by']) ? trim($_GET['sort_by']) : 'created_at';
+        $sortOrder = isset($_GET['sort_order']) ? trim($_GET['sort_order']) : 'DESC';
+        
+        // Validate sort column against allowed list
+        $allowedSort = ['created_at', 'name', 'email', 'role', 'status'];
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'created_at';
+        }
+        
+        // Validate sort order
+        if (!in_array(strtoupper($sortOrder), ['ASC', 'DESC'])) {
+            $sortOrder = 'DESC';
+        }
         
         $sql = "SELECT id, name, email, role, status, created_at FROM users WHERE 1=1";
         $params = [];
@@ -48,10 +63,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (!empty($q)) {
             $sql .= " AND (name LIKE ? OR email LIKE ?)";
             $term = '%' . $q . '%';
-            $params = [$term, $term];
+            $params[] = $term;
+            $params[] = $term;
         }
         
-        $sql .= " ORDER BY created_at DESC LIMIT 50";
+        if (!empty($role) && in_array($role, ['user', 'admin'])) {
+            $sql .= " AND role = ?";
+            $params[] = $role;
+        }
+        
+        if (!empty($status) && in_array($status, ['active', 'inactive'])) {
+            $sql .= " AND status = ?";
+            $params[] = $status;
+        }
+        
+        $sql .= " ORDER BY " . $sortBy . " " . strtoupper($sortOrder) . " LIMIT 100";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);

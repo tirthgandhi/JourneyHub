@@ -30,18 +30,24 @@ document.addEventListener('DOMContentLoaded', function() {
 function initUserManagement() {
     const searchInput = document.getElementById('user-search');
     const searchBtn = document.getElementById('search-btn');
+    const applyFiltersBtn = document.getElementById('apply-filters');
     
     // Search functionality
     let searchTimer;
     const performSearch = () => {
         clearTimeout(searchTimer);
         searchTimer = setTimeout(() => {
-            searchUsers(searchInput.value.trim());
+            searchUsers();
         }, 300);
     };
     
     searchInput.addEventListener('input', performSearch);
     searchBtn.addEventListener('click', performSearch);
+    
+    // Filter functionality
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', searchUsers);
+    }
     
     // Enter key search
     searchInput.addEventListener('keypress', function(e) {
@@ -51,15 +57,38 @@ function initUserManagement() {
     });
 }
 
-function searchUsers(query) {
+function searchUsers() {
     const loading = document.getElementById('loading');
     const tbody = document.getElementById('users-tbody');
+    const searchInput = document.getElementById('user-search');
+    const roleFilter = document.getElementById('filter-role');
+    const statusFilter = document.getElementById('filter-status');
+    const sortBy = document.getElementById('sort-by');
+    const sortOrder = document.getElementById('sort-order');
     
     loading.style.display = 'block';
     
     const params = new URLSearchParams();
+    
+    const query = searchInput ? searchInput.value.trim() : '';
     if (query) {
         params.append('q', query);
+    }
+    
+    if (roleFilter && roleFilter.value) {
+        params.append('role', roleFilter.value);
+    }
+    
+    if (statusFilter && statusFilter.value) {
+        params.append('status', statusFilter.value);
+    }
+    
+    if (sortBy && sortBy.value) {
+        params.append('sort_by', sortBy.value);
+    }
+    
+    if (sortOrder && sortOrder.value) {
+        params.append('sort_order', sortOrder.value);
     }
     
     fetch(`/JourneyHub/api/admin/users.php?${params.toString()}`)
@@ -171,18 +200,24 @@ function changeUserStatus(userId, action) {
 function initTripManagement() {
     const searchInput = document.getElementById('trip-search');
     const searchBtn = document.getElementById('search-btn');
+    const applyFiltersBtn = document.getElementById('apply-trip-filters');
     
     // Search functionality
     let searchTimer;
     const performSearch = () => {
         clearTimeout(searchTimer);
         searchTimer = setTimeout(() => {
-            searchTrips(searchInput.value.trim());
+            searchTrips();
         }, 300);
     };
     
     searchInput.addEventListener('input', performSearch);
     searchBtn.addEventListener('click', performSearch);
+    
+    // Filter functionality
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', searchTrips);
+    }
     
     // Enter key search
     searchInput.addEventListener('keypress', function(e) {
@@ -192,15 +227,33 @@ function initTripManagement() {
     });
 }
 
-function searchTrips(query) {
+function searchTrips() {
     const loading = document.getElementById('loading');
     const tbody = document.getElementById('trips-tbody');
+    const searchInput = document.getElementById('trip-search');
+    const visibilityFilter = document.getElementById('filter-visibility');
+    const sortBy = document.getElementById('sort-by');
+    const sortOrder = document.getElementById('sort-order');
     
     loading.style.display = 'block';
     
     const params = new URLSearchParams();
+    
+    const query = searchInput ? searchInput.value.trim() : '';
     if (query) {
         params.append('q', query);
+    }
+    
+    if (visibilityFilter && visibilityFilter.value) {
+        params.append('visibility', visibilityFilter.value);
+    }
+    
+    if (sortBy && sortBy.value) {
+        params.append('sort_by', sortBy.value);
+    }
+    
+    if (sortOrder && sortOrder.value) {
+        params.append('sort_order', sortOrder.value);
     }
     
     fetch(`/JourneyHub/api/admin/trips.php?${params.toString()}`)

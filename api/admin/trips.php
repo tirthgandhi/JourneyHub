@@ -41,6 +41,31 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         $q = isset($_GET['q']) ? trim($_GET['q']) : '';
+        $visibility = isset($_GET['visibility']) ? trim($_GET['visibility']) : '';
+        $sortBy = isset($_GET['sort_by']) ? trim($_GET['sort_by']) : 'created_at';
+        $sortOrder = isset($_GET['sort_order']) ? trim($_GET['sort_order']) : 'DESC';
+        
+        // Validate sort column against allowed list
+        $allowedSort = ['created_at', 'name', 'owner_name', 'is_public'];
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'created_at';
+        }
+        
+        // Map sort column to actual query column
+        if ($sortBy === 'name') {
+            $sortBy = 't.name';
+        } elseif ($sortBy === 'owner_name') {
+            $sortBy = 'u.name';
+        } elseif ($sortBy === 'created_at') {
+            $sortBy = 't.created_at';
+        } elseif ($sortBy === 'is_public') {
+            $sortBy = 't.is_public';
+        }
+        
+        // Validate sort order
+        if (!in_array(strtoupper($sortOrder), ['ASC', 'DESC'])) {
+            $sortOrder = 'DESC';
+        }
         
         $sql = "SELECT t.id, t.name, u.name as owner_name, t.is_public, t.created_at
                 FROM trips t 
@@ -53,7 +78,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $params[] = '%' . $q . '%';
         }
         
-        $sql .= " ORDER BY t.created_at DESC LIMIT 50";
+        if (!empty($visibility)) {
+            if ($visibility === 'public') {
+                $sql .= " AND t.is_public = 1";
+            } elseif ($visibility === 'private') {
+                $sql .= " AND t.is_public = 0";
+            }
+        }
+        
+        $sql .= " ORDER BY " . $sortBy . " " . strtoupper($sortOrder) . " LIMIT 100";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
