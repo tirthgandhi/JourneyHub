@@ -4,17 +4,12 @@
  * User profile management, photo upload, preferences, account deletion
  */
 
-session_start();
-
-require_once '../config/database.php';
-require_once '../includes/auth-check.php';
-
-// Require login
-require_login();
+require_once __DIR__ . '/../includes/auth-check.php';
+require_once __DIR__ . '/../config/db.php';
 
 $errors = [];
 $success = '';
-$user_id = get_current_user_id();
+$user_id = $_SESSION['user_id'];
 
 // Fetch current user data
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
