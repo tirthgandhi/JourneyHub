@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 50%, var(--primary-light) 100%);
+    background: linear-gradient(135deg, var(--deep-forest) 0%, var(--sage) 50%, var(--warm-sand) 100%);
     padding: 20px;
 }
 
@@ -30,7 +30,7 @@
     font-size: 2rem;
     font-weight: 700;
     text-align: center;
-    color: var(--primary-dark);
+    color: var(--deep-forest);
     margin-bottom: 8px;
     letter-spacing: -0.5px;
 }

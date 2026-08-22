@@ -6,7 +6,7 @@
 
 /* ── Main Navbar ── */
 .navbar {
-    background-color: var(--primary-dark);
+    background-color: var(--deep-forest);
     box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
@@ -34,7 +34,7 @@
 }
 
 .navbar-brand:hover {
-    color: var(--primary-light);
+    color: var(--peach);
 }
 
 /* ── Navigation Links ── */
@@ -80,7 +80,7 @@
     left: 16px;
     right: 16px;
     height: 3px;
-    background-color: var(--primary-light);
+    background-color: var(--peach);
     border-radius: 3px 3px 0 0;
 }
 
@@ -113,8 +113,8 @@
 }
 
 .navbar-logout:hover {
-    background-color: var(--secondary-dark);
-    border-color: var(--secondary-dark);
+    background-color: var(--espresso);
+    border-color: var(--espresso);
     color: #ffffff;
 }
 
