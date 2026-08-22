@@ -88,6 +88,64 @@ $currentPage = 'itinerary';
     <link rel="stylesheet" href="/JourneyHub/assets/css/itinerary.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/activities.css">
     <link rel="stylesheet" href="/JourneyHub/assets/css/sharing.css">
+    <style>
+        .itinerary-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--container-padding);
+        }
+        
+        .destinations-grid {
+            display: grid;
+            gap: var(--space-2xl);
+            margin-top: var(--space-2xl);
+        }
+        
+        .activities-list {
+            margin-top: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        
+        .add-activity-form {
+            margin-top: var(--space-lg);
+            padding: var(--space-lg);
+            background: rgba(247, 234, 224, 0.5);
+            border-radius: 12px;
+            border: 2px dashed rgba(29, 69, 51, 0.2);
+        }
+        
+        .activity-search-results {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            margin-top: var(--space-sm);
+            display: none;
+        }
+        
+        .activity-search-results.active {
+            display: block;
+        }
+        
+        .activity-search-item {
+            padding: var(--space-md);
+            cursor: pointer;
+            border-bottom: 1px solid var(--color-border);
+            transition: background 0.2s ease;
+        }
+        
+        .activity-search-item:hover {
+            background: var(--color-bg);
+        }
+        
+        .budget-sidebar {
+            position: sticky;
+            top: 80px;
+        }
+    </style>
 </head>
 <body>
     <?php require_once __DIR__ . '/../includes/navbar.php'; ?>
