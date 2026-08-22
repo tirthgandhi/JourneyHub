@@ -1,13 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JourneyHub</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    <h1>JourneyHub</h1>
-    <script src="assets/js/app.js"></script>
-</body>
-</html>
+<?php
+/**
+ * JourneyHub — Entry Point
+ *
+ * Redirects logged-in users to the dashboard,
+ * everyone else to the login page.
+ */
+
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    header('Location: /JourneyHub/pages/dashboard.php');
+} else {
+    header('Location: /JourneyHub/pages/login.php');
+}
+exit;
